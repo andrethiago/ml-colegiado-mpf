@@ -1,6 +1,8 @@
 package br.gov.mpf.unico.scriptsdb.autoadministrativo;
 
-public class ExpedienteDeliberadoColegiado {
+import java.util.List;
+
+public class ProcedimentoDeliberadoColegiado {
 
 	private Long id;
 	private String procedimento;
@@ -13,9 +15,10 @@ public class ExpedienteDeliberadoColegiado {
 	private Integer prioritario;
 	private Long municipio;
 	private Integer homologado;
-
 	private Integer quantidadeConversoes;
 	private Integer quantidadeProvidencias;
+
+	private List<Long> providenciasExecutadas;
 
 	public Long getId() {
 		return id;
@@ -121,6 +124,14 @@ public class ExpedienteDeliberadoColegiado {
 		this.homologado = homologado;
 	}
 
+	public List<Long> getProvidenciasExecutadas() {
+		return providenciasExecutadas;
+	}
+
+	public void setProvidenciasExecutadas(List<Long> providenciasExecutadas) {
+		this.providenciasExecutadas = providenciasExecutadas;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -140,7 +151,7 @@ public class ExpedienteDeliberadoColegiado {
 		if (getClass() != obj.getClass()) {
 			return false;
 		}
-		ExpedienteDeliberadoColegiado other = (ExpedienteDeliberadoColegiado) obj;
+		ProcedimentoDeliberadoColegiado other = (ProcedimentoDeliberadoColegiado) obj;
 		if (id == null) {
 			if (other.id != null) {
 				return false;
@@ -154,7 +165,7 @@ public class ExpedienteDeliberadoColegiado {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("ExpedienteDeliberadoColegiado [");
+		builder.append("ProcedimentoDeliberadoColegiado [");
 		if (id != null) {
 			builder.append("id=");
 			builder.append(id);
@@ -205,6 +216,11 @@ public class ExpedienteDeliberadoColegiado {
 			builder.append(municipio);
 			builder.append(", ");
 		}
+		if (homologado != null) {
+			builder.append("homologado=");
+			builder.append(homologado);
+			builder.append(", ");
+		}
 		if (quantidadeConversoes != null) {
 			builder.append("quantidadeConversoes=");
 			builder.append(quantidadeConversoes);
@@ -215,9 +231,9 @@ public class ExpedienteDeliberadoColegiado {
 			builder.append(quantidadeProvidencias);
 			builder.append(", ");
 		}
-		if (homologado != null) {
-			builder.append("homologado=");
-			builder.append(homologado);
+		if (providenciasExecutadas != null) {
+			builder.append("providenciasExecutadas=");
+			builder.append(providenciasExecutadas);
 		}
 		builder.append("]");
 		return builder.toString();
