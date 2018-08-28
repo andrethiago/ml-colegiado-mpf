@@ -15,7 +15,7 @@ class RecuperaDadosProcedimentosColegiadoRepository {
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	List<ExpedienteDeliberadoColegiado> consultaProcedimentos(Integer pagina) {
+	List<ProcedimentoDeliberadoColegiado> consultaProcedimentos(Integer pagina) {
 		StringBuilder select = new StringBuilder();
 		select.append("SELECT * FROM ( SELECT a.*, rownum r__ FROM ( ");
 		select.append("SELECT dp.ID_DOCUMENTO AS \"id\", dp.ETIQUETA AS \"procedimento\", ");
@@ -58,9 +58,31 @@ class RecuperaDadosProcedimentosColegiadoRepository {
 		Map<String, Object> params = new HashMap<>();
 		params.put("pagina", pagina);
 
-		return namedParameterJdbcTemplate.query(select.toString(), params, new BeanPropertyRowMapper<ExpedienteDeliberadoColegiado>(ExpedienteDeliberadoColegiado.class));
+		return namedParameterJdbcTemplate.query(select.toString(), params, new BeanPropertyRowMapper<ProcedimentoDeliberadoColegiado>(ProcedimentoDeliberadoColegiado.class));
 	}
 
-	//public void consultarP
+	List<TipoProvidenciaTO> consultarTodosTiposProvidenciasAtivos() {
+		StringBuilder select = new StringBuilder();
+		select.append("SELECT tp.ID_TP_PROVIDENCIA AS \"id\", tp.NM_TP_PROVIDENCIA AS \"nome\" ");
+		select.append("FROM unico.TP_PROVIDENCIA tp ");
+		select.append("WHERE tp.ID_GENERO = 10 AND tp.ST_ATIVO = 1 ");
+		select.append("ORDER BY tp.NM_TP_PROVIDENCIA ");
+
+		return namedParameterJdbcTemplate.query(select.toString(), new HashMap<String, Object>(), new BeanPropertyRowMapper<TipoProvidenciaTO>(TipoProvidenciaTO.class));
+	}
+
+	List<TipoProvidenciaTO> consultarProvidenciasExecutadas(ProcedimentoDeliberadoColegiado procedimento) {
+		StringBuilder select = new StringBuilder();
+		select.append("SELECT DISTINCT tp.ID_TP_PROVIDENCIA AS \"id\", tp.NM_TP_PROVIDENCIA AS \"nome\" ");
+		select.append("FROM unico.TP_PROVIDENCIA tp JOIN unico.PROVIDENCIA p ON tp.ID_TP_PROVIDENCIA = p.ID_TP_PROVIDENCIA ");
+		select.append("WHERE tp.ID_GENERO = 10 AND tp.ST_ATIVO = 1 AND  p.ID_DOCUMENTO = :idProcedimento ");
+		select.append("AND p.ID_TP_PROVIDENCIA <> 702 AND p.ID_TP_PROVIDENCIA <> 6324524 and p.DT_PROVIDENCIA < :dataProvidencia ");
+
+		Map<String, Object> params = new HashMap<>();
+		params.put("idProcedimento", procedimento.getId());
+		params.put("dataProvidencia", procedimento.getDataEntrada());
+
+		return namedParameterJdbcTemplate.query(select.toString(), params, new BeanPropertyRowMapper<TipoProvidenciaTO>(TipoProvidenciaTO.class));
+	}
 
 }
