@@ -3,6 +3,7 @@ package br.gov.mpf.unico.scriptsdb.autoadministrativo;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -33,22 +34,26 @@ public class RecuperadorDadosProcedimentosColegiado {
 	public static void main(String[] args) {
 
 		RecuperadorDadosProcedimentosColegiado recuperador = new RecuperadorDadosProcedimentosColegiado(ctx.getBean(RecuperaDadosProcedimentosColegiadoRepository.class));
-		recuperador.recuperarExpedientes();
+		recuperador.escreveProcedimentosDeliberadosEmArquivo();
 
 	}
 
-	private void recuperarExpedientes() {
-		List<ExpedienteDeliberadoColegiado> todos = new ArrayList<>();
-		Set<ExpedienteDeliberadoColegiado> expedientes;
+	private void escreveProcedimentosDeliberadosEmArquivo() {
+
+		List<TipoProvidenciaTO> tipos = repository.consultarTodosTiposProvidenciasAtivos();
+
+		List<ProcedimentoDeliberadoColegiado> todos = new ArrayList<>();
+		Set<ProcedimentoDeliberadoColegiado> procedimentos;
 		Integer pagina = 1;
 
 		try (FileWriter fw = new FileWriter("/home/andrethiago/projetos/ml-colegiado-mpf/data/1A.CAM.homologacao-arquivamento.json"); BufferedWriter bw = new BufferedWriter(fw)) {
 			do {
-				expedientes = new HashSet<>(repository.consultaProcedimentos(pagina));
+				procedimentos = new HashSet<>(repository.consultaProcedimentos(pagina));
 				pagina++;
-				System.out.println(expedientes);
-				todos.addAll(expedientes);
-			} while (CollectionUtils.isNotEmpty(expedientes));
+				configurarProvidenciasExecutadas(procedimentos, tipos);
+				System.out.println(procedimentos);
+				todos.addAll(procedimentos);
+			} while (CollectionUtils.isNotEmpty(procedimentos));
 
 			bw.write(new Gson().toJson(todos));
 
@@ -58,6 +63,20 @@ public class RecuperadorDadosProcedimentosColegiado {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void configurarProvidenciasExecutadas(Set<ProcedimentoDeliberadoColegiado> procedimentos, List<TipoProvidenciaTO> tipos) {
+		if (CollectionUtils.isNotEmpty(procedimentos)) {
+			for (ProcedimentoDeliberadoColegiado procedimento : procedimentos) {
+				List<Long> providencias = new ArrayList<>(Collections.nCopies(tipos.size(), 0L));
+				List<TipoProvidenciaTO> executadas = repository.consultarProvidenciasExecutadas(procedimento);
+				for (TipoProvidenciaTO executada : executadas) {
+					int index = tipos.indexOf(executada);
+					providencias.set(index, 1L);
+				}
+				procedimento.setProvidenciasExecutadas(providencias);
+			}
+		}
 	}
 
 }
