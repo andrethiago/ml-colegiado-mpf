@@ -3,7 +3,6 @@ package br.mp.mpf.carga;
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,16 +62,11 @@ public class RecuperadorDadosProcedimentosColegiado {
 	private void configurarProvidenciasExecutadas(Set<ProcedimentoDeliberadoColegiado> procedimentos, List<TipoProvidenciaTO> todosTipos) {
 		if (CollectionUtils.isNotEmpty(procedimentos)) {
 
-			for (ProcedimentoDeliberadoColegiado procedimento : procedimentos) {
-				procedimento.setProvidenciasExecutadas(new ArrayList<>(Collections.nCopies(todosTipos.size(), 0L)));
-			}
-
 			List<TipoProvidenciaTO> executadas = repository.consultarProvidenciasExecutadas(procedimentos);
 			for (TipoProvidenciaTO executada : executadas) {
 				ProcedimentoDeliberadoColegiado procedimento = encontraProcedimento(procedimentos, executada);
 				if (executada.getData().before(procedimento.getDataEntrada())) {
-					int index = todosTipos.indexOf(executada);
-					procedimento.getProvidenciasExecutadas().set(index, 1L);
+					procedimento.adicionarProvidencia(executada.getNome());
 				}
 			}
 

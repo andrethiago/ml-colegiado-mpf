@@ -1,5 +1,6 @@
 package br.mp.mpf.carga;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,7 +20,7 @@ public class ProcedimentoDeliberadoColegiado {
 	private Integer quantidadeConversoes;
 	private Integer quantidadeProvidencias;
 
-	private List<Long> providenciasExecutadas;
+	private List<String> providenciasExecutadas = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -125,12 +126,16 @@ public class ProcedimentoDeliberadoColegiado {
 		this.homologado = homologado;
 	}
 
-	public List<Long> getProvidenciasExecutadas() {
+	public List<String> getProvidenciasExecutadas() {
 		return providenciasExecutadas;
 	}
 
-	public void setProvidenciasExecutadas(List<Long> providenciasExecutadas) {
+	public void setProvidenciasExecutadas(List<String> providenciasExecutadas) {
 		this.providenciasExecutadas = providenciasExecutadas;
+	}
+
+	public void adicionarProvidencia(String providencia) {
+		this.providenciasExecutadas.add(providencia);
 	}
 
 	@Override
