@@ -45,7 +45,7 @@ public class RecuperadorDadosProcedimentosColegiado {
 				procedimentos = new HashSet<>(repository.consultaProcedimentos(pagina));
 				pagina++;
 				configurarProvidenciasExecutadas(procedimentos, tipos);
-				associarDocumentoResponsavelPelaSaida(procedimentos);
+				associarPecasPromocaoArquivamento(procedimentos);
 				System.out.println(procedimentos);
 				todos.addAll(procedimentos);
 			} while (CollectionUtils.isNotEmpty(procedimentos));
@@ -60,59 +60,8 @@ public class RecuperadorDadosProcedimentosColegiado {
 
 	}
 
-	private void associarDocumentoResponsavelPelaSaida(Set<ProcedimentoDeliberadoColegiado> procedimentos) {
-		// TODO Auto-generated method stub
-
-		/**
-		 * 
-		 * 
-		 * SELECT dp.ID_DOCUMENTO AS "id", dp.ETIQUETA AS "procedimento", 
-		tc.ID_TIPO_CLASSE_CNMP AS "id_classe", tc.SG_TIPO_CLASSE_CNMP "classe", 
-		ar.ID_AREA_ATUACAO AS "id_area_atuacao", ar.DESCRICAO "area_atuacao", 
-		i.ID_ITEM_CNMP AS "id_item", i.DS_ITEM AS "tema", 
-		aa.DT_AUTUACAO AS "data_autuacao", g.DT_ENTRADA AS "data_entrada", 
-		decode(dp.ST_URGENTE, 'S', 1, 0) "urgente", aa.ST_PRIORITARIO "prioritario",
-		m.ID_MUNICIPIO "id_municipio", m.NOME "municipio",
-		peca.ID_DOCUMENTO AS "peca",
-		decode(a.DESCRICAO, 'Homologação de Arquivamento', 1, 0) "resultado"
-		FROM unico.GERENCIA_ENTRADA_SAIDA g JOIN unico.DOCUMENTO dp ON g.ID_DOCUMENTO = dp.ID_DOCUMENTO
-		JOIN unico.AUTO_ADMINISTRATIVO aa ON aa.ID_DOCUMENTO = dp.ID_DOCUMENTO
-		JOIN unico.documento deci ON g.ID_DOCUMENTO_DECISAO = deci.ID_DOCUMENTO
-		JOIN unico.ASSUNTO a ON a.ID_ASSUNTO = deci.ID_ASSUNTO
-		JOIN unico.TIPO_CLASSE_CNMP tc ON tc.ID_TIPO_CLASSE_CNMP = aa.ID_TIPO_CLASSE_CNMP_ATUAL
-		JOIN unico.AREA_ATUACAO ar ON aa.ID_AREA_ATUACAO = ar.ID_AREA_ATUACAO
-		JOIN unico.ITEM_CNMP_DOCUMENTO icd ON icd.ID_DOCUMENTO = aa.ID_DOCUMENTO
-		JOIN unico.ITEM_CNMP i ON icd.ID_ITEM_CNMP = i.ID_ITEM_CNMP
-		LEFT JOIN unico.AUTO_ADMIN_LOCAL_FATO lf ON lf.ID_DOCUMENTO = dp.ID_DOCUMENTO
-		LEFT JOIN CORPORATIVO.MUNICIPIO m ON m.ID_MUNICIPIO = lf.ID_MUNICIPIO
-		JOIN unico.REFERENCIA_NOVA r ON r.ID_DOCUMENTO_PRINCIPAL = aa.ID_DOCUMENTO
-		JOIN unico.documento peca ON peca.ID_DOCUMENTO = r.ID_DOCUMENTO_SECUNDARIO
-		WHERE g.ID_CONCENTRADOR_SETOR_DESTINO = 2639550 
-		AND dp.ID_GENERO = 10
-		AND g.DT_SAIDA > TO_DATE('02/07/2018','dd/mm/yyyy')
-		AND g.ID_TIPO_ENTRADA_DESTINO = 1
-		AND icd.ST_TEMA_PRINCIPAL = 1
-		AND EXISTS (
-		SELECT 1 FROM 
-		unico.PROVIDENCIA p, unico.ASSUNTO ap, unico.ASSUNTO_TIPO_ENTRADA ate,
-		unico.TIPO_ENTRADA te
-		WHERE (p.ID_TP_PROVIDENCIA = 702 or p.ID_TP_PROVIDENCIA = 6324524)
-		AND p.ID_DOCUMENTO = aa.ID_DOCUMENTO
-		AND peca.ID_GENERO = 41
-		AND r.ID_TIPO_REFERENCIA = 1 
-		AND te.ST_ATIVO = 1
-		AND ap.ID_ASSUNTO = ate.ID_ASSUNTO
-		AND te.ID_TIPO_ENTRADA = 1
-		AND ate.ID_TIPO_ENTRADA = te.ID_TIPO_ENTRADA
-		AND peca.ID_ASSUNTO IN  (
-		SELECT ate.ID_ASSUNTO 
-		FROM unico.ASSUNTO_TIPO_ENTRADA ate 
-		WHERE ate.ID_TIPO_ENTRADA = 1
-		)
-		);
-		
-		 * 
-		 */
+	private void associarPecasPromocaoArquivamento(Set<ProcedimentoDeliberadoColegiado> procedimentos) {
+		repository.consultarPecasPromocaoArquivameno(procedimentos);
 	}
 
 	private void configurarProvidenciasExecutadas(Set<ProcedimentoDeliberadoColegiado> procedimentos, List<TipoProvidenciaTO> todosTipos) {

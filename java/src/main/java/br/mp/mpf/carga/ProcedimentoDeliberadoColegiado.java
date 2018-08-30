@@ -16,9 +16,11 @@ public class ProcedimentoDeliberadoColegiado {
 	private Integer urgente;
 	private Integer prioritario;
 	private Long municipio;
-	private Integer homologado;
+	private Long pecaPromocao;
+	private Long membroResponsavel;
 	private Integer quantidadeConversoes;
 	private Integer quantidadeProvidencias;
+	private Integer homologado;
 
 	private List<String> providenciasExecutadas = new ArrayList<>();
 
@@ -100,6 +102,22 @@ public class ProcedimentoDeliberadoColegiado {
 
 	public void setMunicipio(Long municipio) {
 		this.municipio = municipio;
+	}
+
+	public Long getPecaPromocao() {
+		return pecaPromocao;
+	}
+
+	public void setPecaPromocao(Long pecaPromocao) {
+		this.pecaPromocao = pecaPromocao;
+	}
+
+	public Long getMembroResponsavel() {
+		return membroResponsavel;
+	}
+
+	public void setMembroResponsavel(Long membroResponsavel) {
+		this.membroResponsavel = membroResponsavel;
 	}
 
 	public Integer getQuantidadeConversoes() {
@@ -222,9 +240,14 @@ public class ProcedimentoDeliberadoColegiado {
 			builder.append(municipio);
 			builder.append(", ");
 		}
-		if (homologado != null) {
-			builder.append("homologado=");
-			builder.append(homologado);
+		if (pecaPromocao != null) {
+			builder.append("pecaPromocao=");
+			builder.append(pecaPromocao);
+			builder.append(", ");
+		}
+		if (membroResponsavel != null) {
+			builder.append("membroResponsavel=");
+			builder.append(membroResponsavel);
 			builder.append(", ");
 		}
 		if (quantidadeConversoes != null) {
@@ -240,6 +263,11 @@ public class ProcedimentoDeliberadoColegiado {
 		if (providenciasExecutadas != null) {
 			builder.append("providenciasExecutadas=");
 			builder.append(providenciasExecutadas);
+			builder.append(", ");
+		}
+		if (homologado != null) {
+			builder.append("homologado=");
+			builder.append(homologado);
 		}
 		builder.append("]");
 		return builder.toString();
