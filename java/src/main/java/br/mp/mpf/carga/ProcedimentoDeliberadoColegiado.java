@@ -1,8 +1,10 @@
 package br.mp.mpf.carga;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ProcedimentoDeliberadoColegiado {
 
@@ -16,13 +18,14 @@ public class ProcedimentoDeliberadoColegiado {
 	private Integer urgente;
 	private Integer prioritario;
 	private Long municipio;
-	private Long pecaPromocao;
+	@JsonIgnore
+	private PecaPedidoColegiado pecaPromocao;
 	private Long membroResponsavel;
 	private Integer quantidadeConversoes;
 	private Integer quantidadeProvidencias;
 	private Integer homologado;
 
-	private List<String> providenciasExecutadas = new ArrayList<>();
+	private Set<String> providenciasExecutadas = new HashSet<>();
 
 	public Long getId() {
 		return id;
@@ -104,12 +107,12 @@ public class ProcedimentoDeliberadoColegiado {
 		this.municipio = municipio;
 	}
 
-	public Long getPecaPromocao() {
+	public PecaPedidoColegiado getPecaPromocao() {
 		return pecaPromocao;
 	}
 
-	public void setPecaPromocao(Long pecaPromocao) {
-		this.pecaPromocao = pecaPromocao;
+	public void setPecaPromocao(PecaPedidoColegiado pecaPedido) {
+		this.pecaPromocao = pecaPedido;
 	}
 
 	public Long getMembroResponsavel() {
@@ -144,11 +147,11 @@ public class ProcedimentoDeliberadoColegiado {
 		this.homologado = homologado;
 	}
 
-	public List<String> getProvidenciasExecutadas() {
+	public Set<String> getProvidenciasExecutadas() {
 		return providenciasExecutadas;
 	}
 
-	public void setProvidenciasExecutadas(List<String> providenciasExecutadas) {
+	public void setProvidenciasExecutadas(Set<String> providenciasExecutadas) {
 		this.providenciasExecutadas = providenciasExecutadas;
 	}
 
@@ -160,6 +163,7 @@ public class ProcedimentoDeliberadoColegiado {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((dataEntrada == null) ? 0 : dataEntrada.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		return result;
 	}
@@ -176,6 +180,13 @@ public class ProcedimentoDeliberadoColegiado {
 			return false;
 		}
 		ProcedimentoDeliberadoColegiado other = (ProcedimentoDeliberadoColegiado) obj;
+		if (dataEntrada == null) {
+			if (other.dataEntrada != null) {
+				return false;
+			}
+		} else if (!dataEntrada.equals(other.dataEntrada)) {
+			return false;
+		}
 		if (id == null) {
 			if (other.id != null) {
 				return false;
@@ -240,11 +251,6 @@ public class ProcedimentoDeliberadoColegiado {
 			builder.append(municipio);
 			builder.append(", ");
 		}
-		if (pecaPromocao != null) {
-			builder.append("pecaPromocao=");
-			builder.append(pecaPromocao);
-			builder.append(", ");
-		}
 		if (membroResponsavel != null) {
 			builder.append("membroResponsavel=");
 			builder.append(membroResponsavel);
@@ -263,6 +269,11 @@ public class ProcedimentoDeliberadoColegiado {
 		if (providenciasExecutadas != null) {
 			builder.append("providenciasExecutadas=");
 			builder.append(providenciasExecutadas);
+			builder.append(", ");
+		}
+		if (pecaPromocao != null) {
+			builder.append("pecaPromocao=");
+			builder.append(pecaPromocao);
 			builder.append(", ");
 		}
 		if (homologado != null) {
