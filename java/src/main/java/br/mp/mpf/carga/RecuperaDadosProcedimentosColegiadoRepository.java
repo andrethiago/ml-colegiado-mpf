@@ -39,7 +39,8 @@ class RecuperaDadosProcedimentosColegiadoRepository {
 		select.append("		AND c.ID_TIPO_ACAO_DOCUMENTO <> 1");
 		select.append(") as \"quantidadeConversoes\", ");
 		select.append("decode(a.DESCRICAO, 'Homologação de Arquivamento', 1, 0) \"homologado\" ");
-		select.append("FROM unico.GERENCIA_ENTRADA_SAIDA g JOIN unico.DOCUMENTO dp ON g.ID_DOCUMENTO = dp.ID_DOCUMENTO ");
+		select
+			.append("FROM unico.GERENCIA_ENTRADA_SAIDA g JOIN unico.DOCUMENTO dp ON g.ID_DOCUMENTO = dp.ID_DOCUMENTO ");
 		select.append("JOIN unico.AUTO_ADMINISTRATIVO aa ON aa.ID_DOCUMENTO = dp.ID_DOCUMENTO ");
 		select.append("JOIN unico.DOCUMENTO deci ON g.ID_DOCUMENTO_DECISAO = deci.ID_DOCUMENTO ");
 		select.append("JOIN unico.ASSUNTO a ON a.ID_ASSUNTO = deci.ID_ASSUNTO ");
@@ -60,7 +61,9 @@ class RecuperaDadosProcedimentosColegiadoRepository {
 		Map<String, Object> params = new HashMap<>();
 		params.put("pagina", pagina);
 
-		return namedParameterJdbcTemplate.query(select.toString(), params, new BeanPropertyRowMapper<ProcedimentoDeliberadoColegiado>(ProcedimentoDeliberadoColegiado.class));
+		return namedParameterJdbcTemplate.query(
+			select.toString(), params,
+			new BeanPropertyRowMapper<ProcedimentoDeliberadoColegiado>(ProcedimentoDeliberadoColegiado.class));
 	}
 
 	List<TipoProvidenciaTO> consultarTodosTiposProvidenciasAtivos() {
@@ -70,14 +73,17 @@ class RecuperaDadosProcedimentosColegiadoRepository {
 		select.append("WHERE tp.ID_GENERO = 10 AND tp.ST_ATIVO = 1 ");
 		select.append("ORDER BY tp.NM_TP_PROVIDENCIA ");
 
-		return namedParameterJdbcTemplate.query(select.toString(), new HashMap<String, Object>(), new BeanPropertyRowMapper<TipoProvidenciaTO>(TipoProvidenciaTO.class));
+		return namedParameterJdbcTemplate.query(
+			select.toString(), new HashMap<String, Object>(),
+			new BeanPropertyRowMapper<TipoProvidenciaTO>(TipoProvidenciaTO.class));
 	}
 
 	List<TipoProvidenciaTO> consultarProvidenciasExecutadas(Set<ProcedimentoDeliberadoColegiado> procedimentos) {
 		StringBuilder select = new StringBuilder();
-		select.append("SELECT DISTINCT tp.ID_TP_PROVIDENCIA AS \"id\", tp.NM_TP_PROVIDENCIA AS \"nome\",  ");
+		select.append("SELECT DISTINCT tp.ID_TP_PROVIDENCIA AS \"id\", tp.TX_PADRAO AS \"nome\",  ");
 		select.append("p.DT_PROVIDENCIA as \"data\", p.ID_DOCUMENTO as \"idDocumento\" ");
-		select.append("FROM unico.TP_PROVIDENCIA tp JOIN unico.PROVIDENCIA p ON tp.ID_TP_PROVIDENCIA = p.ID_TP_PROVIDENCIA ");
+		select.append(
+			"FROM unico.TP_PROVIDENCIA tp JOIN unico.PROVIDENCIA p ON tp.ID_TP_PROVIDENCIA = p.ID_TP_PROVIDENCIA ");
 		select.append("WHERE tp.ID_GENERO = 10 AND tp.ST_ATIVO = 1 AND  p.ID_DOCUMENTO in (:listaDocumentos) ");
 		select.append("AND p.ID_TP_PROVIDENCIA <> 702 AND p.ID_TP_PROVIDENCIA <> 6324524 ");
 		select.append("ORDER BY p.ID_DOCUMENTO ");
@@ -87,17 +93,20 @@ class RecuperaDadosProcedimentosColegiadoRepository {
 		Map<String, Object> params = new HashMap<>();
 		params.put("listaDocumentos", ids);
 
-		return namedParameterJdbcTemplate.query(select.toString(), params, new BeanPropertyRowMapper<TipoProvidenciaTO>(TipoProvidenciaTO.class));
+		return namedParameterJdbcTemplate
+			.query(select.toString(), params, new BeanPropertyRowMapper<TipoProvidenciaTO>(TipoProvidenciaTO.class));
 	}
 
-	public List<PecaPedidoColegiado> consultarPecasPromocaoArquivamento(Set<ProcedimentoDeliberadoColegiado> procedimentos) {
+	public List<PecaPedidoColegiado> consultarPecasPromocaoArquivamento(
+		Set<ProcedimentoDeliberadoColegiado> procedimentos) {
 		List<Long> ids = getIdentificadores(procedimentos);
 
 		StringBuilder select = new StringBuilder();
 
 		select.append("SELECT d.ID_DOCUMENTO as \"id\", r.ID_DOCUMENTO_PRINCIPAL \"idDocumentoPrincipal\", ");
 		select.append("vm.ID_VINCULO \"membroResponsavel\", d.DT_CADASTRO \"dataCadastro\", i.ID_INTEGRA \"integra\" ");
-		select.append("FROM unico.documento d JOIN unico.REFERENCIA_NOVA r ON d.ID_DOCUMENTO = r.ID_DOCUMENTO_SECUNDARIO ");
+		select.append(
+			"FROM unico.documento d JOIN unico.REFERENCIA_NOVA r ON d.ID_DOCUMENTO = r.ID_DOCUMENTO_SECUNDARIO ");
 		select.append("LEFT JOIN unico.RESPONSAVEL_ASSINATURA ra ON ra.ID_DOCUMENTO = d.ID_DOCUMENTO ");
 		select.append("LEFT JOIN unico.INTEGRA i ON i.ID_DOCUMENTO = d.ID_DOCUMENTO ");
 		select.append("JOIN corporativo.vinculo vm ON vm.ID_VINCULO = ra.ID_VINCULO_RESP_ASSINATURA ");
@@ -115,7 +124,8 @@ class RecuperaDadosProcedimentosColegiadoRepository {
 		Map<String, Object> params = new HashMap<>();
 		params.put("procedimentos", ids);
 
-		return namedParameterJdbcTemplate.query(select.toString(), params, new BeanPropertyRowMapper<PecaPedidoColegiado>(PecaPedidoColegiado.class));
+		return namedParameterJdbcTemplate.query(
+			select.toString(), params, new BeanPropertyRowMapper<PecaPedidoColegiado>(PecaPedidoColegiado.class));
 
 	}
 

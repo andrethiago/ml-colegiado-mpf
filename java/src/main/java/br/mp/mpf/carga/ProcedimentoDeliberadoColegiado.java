@@ -4,6 +4,8 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ProcedimentoDeliberadoColegiado {
@@ -25,6 +27,7 @@ public class ProcedimentoDeliberadoColegiado {
 	private Integer quantidadeProvidencias;
 	private Integer homologado;
 
+	@JsonIgnore
 	private Set<String> providenciasExecutadas = new HashSet<>();
 
 	public Long getId() {
@@ -113,6 +116,7 @@ public class ProcedimentoDeliberadoColegiado {
 
 	public void setPecaPromocao(PecaPedidoColegiado pecaPedido) {
 		this.pecaPromocao = pecaPedido;
+		this.membroResponsavel = pecaPedido.getMembroResponsavel();
 	}
 
 	public Long getMembroResponsavel() {
@@ -157,6 +161,10 @@ public class ProcedimentoDeliberadoColegiado {
 
 	public void adicionarProvidencia(String providencia) {
 		this.providenciasExecutadas.add(providencia);
+	}
+
+	public String getTextosProvidencias() {
+		return StringUtils.join(providenciasExecutadas, ',');
 	}
 
 	@Override
@@ -251,6 +259,11 @@ public class ProcedimentoDeliberadoColegiado {
 			builder.append(municipio);
 			builder.append(", ");
 		}
+		if (pecaPromocao != null) {
+			builder.append("pecaPromocao=");
+			builder.append(pecaPromocao);
+			builder.append(", ");
+		}
 		if (membroResponsavel != null) {
 			builder.append("membroResponsavel=");
 			builder.append(membroResponsavel);
@@ -266,14 +279,9 @@ public class ProcedimentoDeliberadoColegiado {
 			builder.append(quantidadeProvidencias);
 			builder.append(", ");
 		}
-		if (providenciasExecutadas != null) {
-			builder.append("providenciasExecutadas=");
-			builder.append(providenciasExecutadas);
-			builder.append(", ");
-		}
-		if (pecaPromocao != null) {
-			builder.append("pecaPromocao=");
-			builder.append(pecaPromocao);
+		if (getTextosProvidencias() != null) {
+			builder.append("textosProvidencias=");
+			builder.append(getTextosProvidencias());
 			builder.append(", ");
 		}
 		if (homologado != null) {
