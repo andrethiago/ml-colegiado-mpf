@@ -55,7 +55,8 @@ class RecuperaDadosProcedimentosColegiadoRepository {
 		select.append("AND g.DT_SAIDA > TO_DATE('02/07/2018','dd/mm/yyyy') ");
 		select.append("AND g.ID_TIPO_ENTRADA_DESTINO = 1 ");
 		select.append("AND icd.ST_TEMA_PRINCIPAL = 1 ");
-		select.append("ORDER BY g.DT_ENTRADA desc ");
+		select.append("AND lf.ST_PRINCIPAL = 1 ");
+		select.append("ORDER BY g.DT_ENTRADA DESC ");
 		select.append(") a WHERE rownum < ((:pagina * 100) + 1 ) ) WHERE r__ >= (((:pagina-1) * 100) + 1)");
 
 		Map<String, Object> params = new HashMap<>();

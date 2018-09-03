@@ -48,12 +48,12 @@ public class RecuperadorDadosProcedimentosColegiado {
 					"/home/andrethiago/projetos/ml-colegiado-mpf/data/1A.CAM.pecas-homologacao-arquivamento.json"));) {
 			procedimentos = new HashSet<>(repository.consultaProcedimentos(pagina));
 			while (CollectionUtils.isNotEmpty(procedimentos)) {
+				System.out.println(procedimentos);
 				configurarProvidenciasExecutadas(procedimentos);
 				associarPecasPromocaoArquivamento(procedimentos);
-				System.out.println(procedimentos);
 				todos.addAll(procedimentos);
-				procedimentos = new HashSet<>(repository.consultaProcedimentos(pagina));
 				pagina++;
+				procedimentos = new HashSet<>(repository.consultaProcedimentos(pagina));
 			}
 
 			ObjectMapper mapper = new ObjectMapper();
