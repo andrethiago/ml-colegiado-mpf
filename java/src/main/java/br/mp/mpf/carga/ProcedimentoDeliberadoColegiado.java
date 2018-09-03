@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public class ProcedimentoDeliberadoColegiado {
@@ -15,7 +16,9 @@ public class ProcedimentoDeliberadoColegiado {
 	private Long classe;
 	private Long areaAtuacao;
 	private Long itemCnmp;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private Date dataAutuacao;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private Date dataEntrada;
 	private Integer urgente;
 	private Integer prioritario;
@@ -23,6 +26,7 @@ public class ProcedimentoDeliberadoColegiado {
 	@JsonIgnore
 	private PecaPedidoColegiado pecaPromocao;
 	private Long membroResponsavel;
+	private Long identificadorPecaPromocao;
 	private Integer quantidadeConversoes;
 	private Integer quantidadeProvidencias;
 	private Integer homologado;
@@ -117,6 +121,7 @@ public class ProcedimentoDeliberadoColegiado {
 	public void setPecaPromocao(PecaPedidoColegiado pecaPedido) {
 		this.pecaPromocao = pecaPedido;
 		this.membroResponsavel = pecaPedido.getMembroResponsavel();
+		this.identificadorPecaPromocao = pecaPedido.getId();
 	}
 
 	public Long getMembroResponsavel() {
@@ -125,6 +130,14 @@ public class ProcedimentoDeliberadoColegiado {
 
 	public void setMembroResponsavel(Long membroResponsavel) {
 		this.membroResponsavel = membroResponsavel;
+	}
+
+	public Long getIdentificadorPecaPromocao() {
+		return identificadorPecaPromocao;
+	}
+
+	public void setIdentificadorPecaPromocao(Long identificadorPecaPromocao) {
+		this.identificadorPecaPromocao = identificadorPecaPromocao;
 	}
 
 	public Integer getQuantidadeConversoes() {

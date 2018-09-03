@@ -22,8 +22,7 @@ import br.mp.mpf.spring.AppConfig;
 public class RecuperadorDadosProcedimentosColegiado {
 
 	protected static ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-	protected final NamedParameterJdbcTemplate namedParameterJdbcTemplate =
-		ctx.getBean(NamedParameterJdbcTemplate.class);
+	protected final NamedParameterJdbcTemplate namedParameterJdbcTemplate = ctx.getBean(NamedParameterJdbcTemplate.class);
 
 	private RecuperaDadosProcedimentosColegiadoRepository repository;
 
@@ -32,8 +31,7 @@ public class RecuperadorDadosProcedimentosColegiado {
 	}
 
 	public static void main(String[] args) {
-		RecuperadorDadosProcedimentosColegiado recuperador = new RecuperadorDadosProcedimentosColegiado(
-			ctx.getBean(RecuperaDadosProcedimentosColegiadoRepository.class));
+		RecuperadorDadosProcedimentosColegiado recuperador = new RecuperadorDadosProcedimentosColegiado(ctx.getBean(RecuperaDadosProcedimentosColegiadoRepository.class));
 		recuperador.escreveProcedimentosDeliberadosEmArquivo();
 	}
 
@@ -42,10 +40,9 @@ public class RecuperadorDadosProcedimentosColegiado {
 		Set<ProcedimentoDeliberadoColegiado> procedimentos;
 		Integer pagina = 1;
 
-		try (BufferedWriter bwArquivoProcedimentos = new BufferedWriter(
-			new FileWriter("/home/andrethiago/projetos/ml-colegiado-mpf/data/1A.CAM.homologacao-arquivamento.json"));
-				BufferedWriter bwArquivoPecas = new BufferedWriter(new FileWriter(
-					"/home/andrethiago/projetos/ml-colegiado-mpf/data/1A.CAM.pecas-homologacao-arquivamento.json"));) {
+		try (BufferedWriter bwArquivoProcedimentos = new BufferedWriter(new FileWriter("/home/andrethiago/projetos/ml-colegiado-mpf/data/1A.CAM.homologacao-arquivamento.json"));
+				BufferedWriter bwArquivoPecas =
+					new BufferedWriter(new FileWriter("/home/andrethiago/projetos/ml-colegiado-mpf/data/1A.CAM.pecas-homologacao-arquivamento.json"));) {
 			procedimentos = new HashSet<>(repository.consultaProcedimentos(pagina));
 			while (CollectionUtils.isNotEmpty(procedimentos)) {
 				System.out.println(procedimentos);
@@ -58,8 +55,7 @@ public class RecuperadorDadosProcedimentosColegiado {
 
 			ObjectMapper mapper = new ObjectMapper();
 			bwArquivoProcedimentos.write(mapper.writeValueAsString(todos));
-			List<PecaPedidoColegiado> pecas =
-				todos.stream().map(procedimento -> procedimento.getPecaPromocao()).collect(Collectors.toList());
+			List<PecaPedidoColegiado> pecas = todos.stream().map(procedimento -> procedimento.getPecaPromocao()).collect(Collectors.toList());
 			bwArquivoPecas.write(mapper.writeValueAsString(pecas));
 			System.out.println("Acabou.");
 		} catch (Exception e) {
@@ -73,11 +69,9 @@ public class RecuperadorDadosProcedimentosColegiado {
 		List<PecaPedidoColegiado> pecas = repository.consultarPecasPromocaoArquivamento(procedimentos);
 
 		for (ProcedimentoDeliberadoColegiado procedimento : procedimentos) {
-
+			System.out.println();
 			PecaPedidoColegiado pecaPedido = pecas.stream()
-				.filter(
-					peca -> peca.getIdDocumentoPrincipal().equals(procedimento.getId())
-						&& peca.getDataCadastro().before(procedimento.getDataEntrada()))
+				.filter(peca -> peca.getIdDocumentoPrincipal().equals(procedimento.getId()) && peca.getDataCadastro().before(procedimento.getDataEntrada()))
 				.findFirst()
 				.orElse(new PecaPedidoColegiado());
 			procedimento.setPecaPromocao(pecaPedido);
@@ -88,15 +82,13 @@ public class RecuperadorDadosProcedimentosColegiado {
 		if (CollectionUtils.isNotEmpty(procedimentos)) {
 			List<TipoProvidenciaTO> executadas = repository.consultarProvidenciasExecutadas(procedimentos);
 			for (TipoProvidenciaTO executada : executadas) {
-				List<ProcedimentoDeliberadoColegiado> procedimentosComProvidencias =
-					encontraProcedimentos(procedimentos, executada);
+				List<ProcedimentoDeliberadoColegiado> procedimentosComProvidencias = encontraProcedimentos(procedimentos, executada);
 				ordenarProcedimentos(procedimentosComProvidencias);
 
 				Date dataEntradaAnterior = null;
 				for (ProcedimentoDeliberadoColegiado procedimento : procedimentosComProvidencias) {
 					if (dataEntradaAnterior != null) {
-						if (executada.getData().after(dataEntradaAnterior)
-							&& executada.getData().before(procedimento.getDataEntrada())) {
+						if (executada.getData().after(dataEntradaAnterior) && executada.getData().before(procedimento.getDataEntrada())) {
 							procedimento.adicionarProvidencia(executada.getNome());
 						}
 					} else if (executada.getData().before(procedimento.getDataEntrada())) {
@@ -121,11 +113,8 @@ public class RecuperadorDadosProcedimentosColegiado {
 	/*
 	 * Pode retornar mais de um, pois, o procedimento pode ter mais de uma entrada no Colegiado.
 	 */
-	private List<ProcedimentoDeliberadoColegiado> encontraProcedimentos(
-		Set<ProcedimentoDeliberadoColegiado> procedimentos, TipoProvidenciaTO executada) {
-		return procedimentos.stream()
-			.filter(p -> p.getId().equals(executada.getIdDocumento()))
-			.collect(Collectors.toList());
+	private List<ProcedimentoDeliberadoColegiado> encontraProcedimentos(Set<ProcedimentoDeliberadoColegiado> procedimentos, TipoProvidenciaTO executada) {
+		return procedimentos.stream().filter(p -> p.getId().equals(executada.getIdDocumento())).collect(Collectors.toList());
 	}
 
 }
