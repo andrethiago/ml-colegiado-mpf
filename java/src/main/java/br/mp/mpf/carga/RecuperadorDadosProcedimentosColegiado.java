@@ -13,7 +13,6 @@ import java.util.stream.Collectors;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -21,8 +20,13 @@ import br.mp.mpf.spring.AppConfig;
 
 public class RecuperadorDadosProcedimentosColegiado {
 
+	public static final String CAMINHO_PASTA_DATA = "/home/andrethiago/projetos/ml-colegiado-mpf/data/";
+
+	public static final String ARQUIVO_PECAS_HOMOLOGACAO_ARQUIVAMENTO_JSON = CAMINHO_PASTA_DATA + "1A.CAM.pecas-homologacao-arquivamento.json";
+
+	public static final String ARQUIVO_PROCEDIMENTOS_JSON = CAMINHO_PASTA_DATA + "1A.CAM.homologacao-arquivamento.json";
+
 	protected static ApplicationContext ctx = new AnnotationConfigApplicationContext(AppConfig.class);
-	protected final NamedParameterJdbcTemplate namedParameterJdbcTemplate = ctx.getBean(NamedParameterJdbcTemplate.class);
 
 	private RecuperaDadosProcedimentosColegiadoRepository repository;
 
@@ -40,9 +44,8 @@ public class RecuperadorDadosProcedimentosColegiado {
 		Set<ProcedimentoDeliberadoColegiado> procedimentos;
 		Integer pagina = 1;
 
-		try (BufferedWriter bwArquivoProcedimentos = new BufferedWriter(new FileWriter("/home/andrethiago/projetos/ml-colegiado-mpf/data/1A.CAM.homologacao-arquivamento.json"));
-				BufferedWriter bwArquivoPecas =
-					new BufferedWriter(new FileWriter("/home/andrethiago/projetos/ml-colegiado-mpf/data/1A.CAM.pecas-homologacao-arquivamento.json"));) {
+		try (BufferedWriter bwArquivoProcedimentos = new BufferedWriter(new FileWriter(ARQUIVO_PROCEDIMENTOS_JSON));
+				BufferedWriter bwArquivoPecas = new BufferedWriter(new FileWriter(ARQUIVO_PECAS_HOMOLOGACAO_ARQUIVAMENTO_JSON));) {
 			procedimentos = new HashSet<>(repository.consultaProcedimentos(pagina));
 			while (CollectionUtils.isNotEmpty(procedimentos)) {
 				System.out.println(procedimentos);
