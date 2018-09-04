@@ -6,11 +6,9 @@ import static br.mp.mpf.carga.RecuperadorDadosProcedimentosColegiado.CAMINHO_PAS
 import java.io.BufferedReader;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.context.ApplicationContext;
@@ -63,13 +61,10 @@ public class RecuperadorTextoIntegra {
 				ArquivoIntegra integra = repository.consultarArquivoIntegra(peca);
 				System.out.println(integra.getNomeArquivo());
 				try (OutputStream fos = new FileOutputStream(CAMINHO_PASTA_DATA + peca.getIdDocumentoPrincipal() + "-" + peca.getIntegra() + "." + integra.getExtensao())) {
-					InputStream inputStream = integra.getConteudo().getBinaryStream();
-					int length = 0;
-					byte[] buff = new byte[4096];
-					while ((length = inputStream.read(buff)) != -1) {
-						fos.write(buff, 0, length);
-					}
-				} catch (IOException | SQLException e) {
+					byte[] buff = integra.getBytesConteudo();
+					int length = buff.length;
+					fos.write(buff, 0, length);
+				} catch (IOException e) {
 					System.err.println("Erro ao escrever conteúdo do arquivo " + integra.getNomeArquivo());
 					e.printStackTrace();
 				}
