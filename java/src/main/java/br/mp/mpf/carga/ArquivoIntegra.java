@@ -35,7 +35,7 @@ public class ArquivoIntegra {
 	}
 
 	public String getExtensao() {
-		return FilenameUtils.getExtension(nomeArquivo);
+		return FilenameUtils.getExtension(nomeArquivo).toLowerCase();
 	}
 
 }
