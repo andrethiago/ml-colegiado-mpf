@@ -58,16 +58,23 @@ public class RecuperadorTextoIntegra {
 	private void escreveArquivos(List<PecaPedidoColegiado> pecas) {
 		pecas.forEach(peca -> {
 			if (peca.getIntegra() != null) {
-				ArquivoIntegra integra = repository.consultarArquivoIntegra(peca);
-				System.out.println(integra.getNomeArquivo());
-				try (OutputStream fos =
-					new FileOutputStream(CAMINHO_PASTA_DATA + "integras/" + peca.getIdDocumentoPrincipal() + "-" + peca.getIntegra() + "." + integra.getExtensao())) {
-					byte[] buff = integra.getBytesConteudo();
-					int length = buff.length;
-					fos.write(buff, 0, length);
-				} catch (IOException e) {
-					System.err.println("Erro ao escrever conteúdo do arquivo " + integra.getNomeArquivo());
-					e.printStackTrace();
+				ArquivoIntegra integra = null;
+				try {
+					integra = repository.consultarArquivoIntegra(peca);
+				} catch (Exception e) {
+					// faz nada
+				}
+				if (integra != null) {
+					System.out.println(integra.getNomeArquivo());
+					try (OutputStream fos =
+						new FileOutputStream(CAMINHO_PASTA_DATA + "integras/" + peca.getIdDocumentoPrincipal() + "-" + peca.getIntegra() + "." + integra.getExtensao())) {
+						byte[] buff = integra.getBytesConteudo();
+						int length = buff.length;
+						fos.write(buff, 0, length);
+					} catch (IOException e) {
+						System.err.println("Erro ao escrever conteúdo do arquivo " + integra.getNomeArquivo());
+						e.printStackTrace();
+					}
 				}
 			}
 		});

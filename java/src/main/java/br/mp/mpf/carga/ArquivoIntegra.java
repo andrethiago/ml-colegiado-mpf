@@ -25,13 +25,17 @@ public class ArquivoIntegra {
 		return conteudo;
 	}
 
-	public void setConteudo(Blob conteudo) throws SQLException, IOException {
+	public void setConteudo(Blob conteudo) throws IOException, SQLException {
 		this.conteudo = conteudo;
 		this.bytesConteudo = IOUtils.toByteArray(conteudo.getBinaryStream());
 	}
 
 	public byte[] getBytesConteudo() {
 		return bytesConteudo;
+	}
+
+	public void setBytesConteudo(byte[] bytesConteudo) {
+		this.bytesConteudo = bytesConteudo;
 	}
 
 	public String getExtensao() {
