@@ -66,8 +66,7 @@ public class RecuperadorTextoIntegra {
 				}
 				if (integra != null) {
 					System.out.println(integra.getNomeArquivo());
-					try (OutputStream fos =
-						new FileOutputStream(CAMINHO_PASTA_DATA + "integras/" + peca.getIdDocumentoPrincipal() + "-" + peca.getIntegra() + "." + integra.getExtensao())) {
+					try (OutputStream fos = new FileOutputStream(CAMINHO_PASTA_DATA + "integras/" + peca.getIdDocumentoPrincipal() + "." + integra.getExtensao())) {
 						byte[] buff = integra.getBytesConteudo();
 						int length = buff.length;
 						fos.write(buff, 0, length);
