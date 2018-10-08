@@ -1,29 +1,28 @@
-palavras-chaves, expressao-regular
-AUSÊNCIA DE IRREGULARIDADES, \bausência[s]?\b(\s)+\bde\b(\s)+\birregularidade[s]?\b
-IRREGULARIDADE SANADA, \birregularidade[s]?\b(\s)+\bsanada[s]?\b
-NÃO COMPROVAÇÃO, \bnão\b(\s)+\bcomprovação\b
-INEXISTÊNCIA, \binexistência[s]?\b
-SOLUCIONADA, \bsolucionada[s]?\b
-EXAURIMENTO, \bexaurimento\b
-EXAURIDA, \bexaurida[s]?\b
-PERDA DE OBJETO, \bperda\b(\s)+\bde\b(\s)+\bobjeto\b
-IRREGULARIDADE NÃO COMPROVADA, \birregularidade[s]?\b(\s)+\bnão\b(\s)+\bcomprovada[s]?\b
-INEXISTÊNCIA DE INDÍCIOS DE IRREGULARIDADE, \binexistência\b(\s)+\bde\b(\s)+\bindício[s]?\b(\s)+\bde\b(\s)+irregularidade[s]?\b
-IRREGULARIDADE NÃO CONFIRMADA, \birregularidade[s]?\b(\s)+\bnão\b(\s)+\bconfirmada[s]?\b
-RECOMENDAÇÃO ATENDIDA, \brecomendaç(ão|ões)\b(\s)+\batendida[s]?\b
-RECOMENDAÇÃO ACATADA, \brecomendaç(ão|ões)\b(\s)+\bacatada[s]?\b
-CUMPRIDAS, \bcumprida[s]?\b
-ADOTADAS, \badotada[s]?\b
-INEXISTÊNCIA DE INDÍCIOS MÍNIMOS DE IRREGULARIDADES, \binexistência\b(\s)+\bde\b(\s)+\bindício[s]?\b(\s)+\bde\b(\s)+\bmínimo[s]?\b(\s)+\bde\b(\s)+irregularidade[s]?\b
-RECOMENDAÇÃO EXPEDIDA E ACATADA, \recomendaç(ão|ões)\b(\s)+\bexpedida[s]?\b(\s)+\be\b(\s)+\bacatada[s]?\b
-JUSTIFICATIVAS SATISFATÓRIAS, \bjustificativa[s]?\b(\s)+\bsatisfatória[s]?\b
-CORREÇÃO DAS FALHAS, \bcorreç(ão|ões)\b(\s)+\bda[s]?\b(\s)+\bfalha[s]?\b
-AÇÃO AJUIZADA, \baç(ão|ões)\b(\s)+\bajuizada[s]?\b
-QUESTÃO JUDICIALIZADA, \bquest(ão|ões)\b(\s)+\bjudicializada[s]?\b
+palavras-chaves,expressao-regular
+AUSÊNCIA DE IRREGULARIDADES,\bausência[s]?\b(\s)+\bde\b(\s)+\birregularidade[s]?\b
+IRREGULARIDADE SANADA,\birregularidade[s]?\b(\s)+\bsanada[s]?\b
+NÃO COMPROVAÇÃO,\bnão\b(\s)+\bcomprovação\b
+INEXISTÊNCIA,\binexistência[s]?\b
+SOLUCIONADA,\bsolucionada[s]?\b
+EXAURIMENTO,\bexaurimento\b
+EXAURIDA,\bexaurida[s]?\b
+PERDA DE OBJETO,\bperda\b(\s)+\bde\b(\s)+\bobjeto\b
+IRREGULARIDADE NÃO COMPROVADA,\birregularidade[s]?\b(\s)+\bnão\b(\s)+\bcomprovada[s]?\b
+INEXISTÊNCIA DE INDÍCIOS DE IRREGULARIDADE,\binexistência\b(\s)+\bde\b(\s)+\bindício[s]?\b(\s)+\bde\b(\s)+irregularidade[s]?\b
+IRREGULARIDADE NÃO CONFIRMADA,\birregularidade[s]?\b(\s)+\bnão\b(\s)+\bconfirmada[s]?\b
+RECOMENDAÇÃO ATENDIDA,\brecomendaç(ão|ões)\b(\s)+\batendida[s]?\b
+RECOMENDAÇÃO ACATADA,\brecomendaç(ão|ões)\b(\s)+\bacatada[s]?\b
+CUMPRIDAS,\bcumprida[s]?\b
+ADOTADAS,\badotada[s]?\b
+INEXISTÊNCIA DE INDÍCIOS MÍNIMOS DE IRREGULARIDADES,\binexistência\b(\s)+\bde\b(\s)+\bindício[s]?\b(\s)+\bde\b(\s)+\bmínimo[s]?\b(\s)+\bde\b(\s)+irregularidade[s]?\b
+RECOMENDAÇÃO EXPEDIDA E ACATADA,\brecomendaç(ão|ões)\b(\s)+\bexpedida[s]?\b(\s)+\be\b(\s)+\bacatada[s]?\b
+JUSTIFICATIVAS SATISFATÓRIAS,\bjustificativa[s]?\b(\s)+\bsatisfatória[s]?\b
+CORREÇÃO DAS FALHAS,\bcorreç(ão|ões)\b(\s)+\bda[s]?\b(\s)+\bfalha[s]?\b
+AÇÃO AJUIZADA,\baç(ão|ões)\b(\s)+\bajuizada[s]?\b
+QUESTÃO JUDICIALIZADA,\bquest(ão|ões)\b(\s)+\bjudicializada[s]?\b
 BANCO DE PREÇOS + RECOMENDAÇÃO,
-DIREITO INDIVIDUAL, \bdireito\b(\s)+\bindividua(l|is)\b
-EXCESSO DE PESO, \bexcesso[s]?\b(\s)+\bde\b(\s)+\bpeso[s]?\b
-MAMOGRAFIA, \bmamografia[s]\b
-SISCAN, \bsiscan\b
+DIREITO INDIVIDUAL,\bdireito[s]?\b(\s)+\bindividua(l|is)\b
+EXCESSO DE PESO,\bexcesso[s]?\b(\s)+\bde\b(\s)+\bpeso[s]?\b
+MAMOGRAFIA,\bmamografia[s]\b
+SISCAN,\bsiscan\b
 REGIME JURÍDICO + CONSELHOS PROFISSIONAIS,
-MAMÓGRAFO (ADICIONADA), \bmamógrafo[s]\b
